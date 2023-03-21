@@ -4,10 +4,15 @@
  */
 package com.miaplicacion.primerproyecto.Controller;
 
+import java.util.List;
+import java.util.ArrayList;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
 /**
@@ -17,6 +22,22 @@ import org.springframework.web.bind.annotation.RestController;
 
 @RestController
 public class HolaController {
+    @GetMapping("/cliente/traer")
+    @ResponseBody
+    public List<Cliente> traerClientes(){
+    List<Cliente> listaClientes = new ArrayList<Cliente>();
+    listaClientes.add(new Cliente(1,"Sergio","Genovese"));
+    listaClientes.add(new Cliente(1,"Nestor","Rotela"));
+    listaClientes.add(new Cliente(1,"Leandro","Rezzonico"));
+    return listaClientes;
+}
+
+    @GetMapping("/pruebaresponse")
+    ResponseEntity <String> traerRespuesta(){
+        return new ResponseEntity<>("Este es un mensaje Response Entity ",HttpStatus.OK);  
+    }
+
+
     @GetMapping("/hola")
     public String decirHola(@RequestParam String nombre,
                             @RequestParam int edad, 
@@ -25,7 +46,8 @@ public class HolaController {
                 ", tu profesion es: " + profesion;
     }
     @PostMapping("/cliente")
-    public String nuevoCliente(){
-        return "Chau";
+    public void nuevoCliente(@RequestBody Cliente cli){
+        System.out.println("Datos Cliente: " + cli.getNombre()+ "Apellido: "+ cli.getApellido());
     }
 }
+
